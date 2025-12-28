@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Yunan Travel & Consultancy | Your World Awaits</title>
+    <title>Mihret Bekalu Visa Form and Consultancy | Expert Visa Solutions</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,12 +20,12 @@
             },
             colors: {
               brand: {
-                primary: '#0F4C81', // Classic Deep Blue
-                secondary: '#E07A5F', // Warm Terracotta
-                accent: '#D4AF37', // Refined Gold
-                emerald: '#2D6A4F', // Lush Green
-                sand: '#F4F1DE', // Soft Cream
-                ink: '#1D1D1D', // Strong Dark
+                primary: '#0F4C81',
+                secondary: '#E07A5F',
+                accent: '#D4AF37',
+                emerald: '#2D6A4F',
+                sand: '#F4F1DE',
+                ink: '#1D1D1D',
               }
             },
             backgroundImage: {
@@ -36,6 +36,7 @@
               'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'float': 'float 6s ease-in-out infinite',
               'marquee': 'marquee 60s linear infinite',
+              'orbit': 'orbit 10s linear infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -49,6 +50,10 @@
               marquee: {
                 '0%': { transform: 'translateX(0)' },
                 '100%': { transform: 'translateX(-100%)' },
+              },
+              orbit: {
+                '0%': { transform: 'rotate(0deg)' },
+                '100%': { transform: 'rotate(360deg)' },
               }
             }
           }
@@ -56,29 +61,19 @@
       }
     </script>
     <style>
-      body {
-        -webkit-font-smoothing: antialiased;
+      body { 
+        -webkit-font-smoothing: antialiased; 
       }
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-      .glass {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(16px);
-      }
-      .reveal {
-        opacity: 0;
-        transform: translateY(30px);
-        transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-      .reveal.active {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(16px); }
+      .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+      .reveal.active { opacity: 1; transform: translateY(0); }
+      .premium-card { position: relative; width: 100%; min-height: 280px; overflow: hidden; background-color: #1d1d1d; }
+      .premium-card img { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; z-index: 1; transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1); }
+      .premium-card::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(29, 29, 29, 0.1), rgba(29, 29, 29, 0.85)); z-index: 2; pointer-events: none; }
+      .premium-card-content { position: relative; z-index: 3; }
     </style>
     <script type="importmap">
 {
@@ -87,7 +82,7 @@
     "react/": "https://esm.sh/react@19.0.0/",
     "react-dom": "https://esm.sh/react-dom@19.0.0",
     "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
-    "react-router-dom": "https://esm.sh/react-router-dom@7.1.5?external=react,react-dom",
+    "react-router-dom": "https://esm.sh/react-router-dom@6.28.1?external=react,react-dom",
     "lucide-react": "https://esm.sh/lucide-react@0.473.0?external=react",
     "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
   }

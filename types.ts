@@ -28,12 +28,18 @@ export type Continent = 'Africa' | 'Asia' | 'Europe' | 'North America' | 'South 
 export interface Country {
   name: LocalizedString;
   flag: string;
-  image: string;
+  image?: string;
   id: string;
   continent: Continent;
+  theme?: string;
 }
 
-export type OpportunityCategory = 'Masters' | 'PhD' | 'Undergraduate' | 'Internship' | 'Fellowship' | 'Short Course' | 'Research';
+export interface DestinationGroup {
+  continent: Continent;
+  countries: Country[];
+}
+
+export type OpportunityCategory = 'Masters' | 'PhD' | 'Undergraduate' | 'Internship' | 'Fellowship' | 'Short Course' | 'Research' | 'Professional';
 
 export interface Scholarship {
   id: string;
@@ -47,15 +53,14 @@ export interface Scholarship {
   image?: string;
   category: OpportunityCategory;
   tags: string[]; 
-  availablePrograms?: string[];
   url?: string;
 }
 
 export interface Program {
   id: string;
   title: LocalizedString;
-  field: 'Medicine' | 'Engineering' | 'Business' | 'Computer Science' | 'Arts' | 'Law' | 'Social Sciences' | 'Environmental' | 'Archaeology';
-  type: 'Undergraduate' | 'Internship' | 'Research' | 'Postgraduate';
+  field: 'Medicine' | 'Engineering' | 'Business' | 'Computer Science' | 'Arts' | 'Law' | 'Social Sciences' | 'Environmental' | 'Archaeology' | 'Tourism' | 'History' | 'Science' | 'Mathematics';
+  type: 'Undergraduate' | 'Internship' | 'Research';
   countryId: string;
   university: string;
   duration: LocalizedString;

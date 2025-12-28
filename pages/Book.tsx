@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { SERVICES, COMPANY_INFO } from '../constants';
 import { Check, Info, Banknote, Calendar, ShieldCheck, ArrowRight, ArrowLeft } from 'lucide-react';
@@ -179,7 +178,7 @@ const Book: React.FC = () => {
                         }`}
                       >
                         <div className="w-16 h-16 bg-white/10 overflow-hidden flex items-center justify-center">
-                          {method.logo ? <img src={method.logo} className="w-full h-full object-cover" /> : <method.icon size={28} strokeWidth={1} />}
+                          {method.logo ? <img src={method.logo} className="w-full h-full object-cover" loading="lazy" /> : <method.icon size={28} strokeWidth={1} />}
                         </div>
                         <div>
                           <span className="font-bold text-xs uppercase tracking-widest">{method.name}</span>

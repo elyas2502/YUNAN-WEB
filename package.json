@@ -1,5 +1,5 @@
 {
-  "name": "yunan-travel-&-consultancy",
+  "name": "mihret-bekalu-visa-form-and-consultancy",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -11,7 +11,7 @@
   "dependencies": {
     "react": "19.0.0",
     "react-dom": "^19.2.3",
-    "react-router-dom": "7.1.5",
+    "react-router-dom": "6.28.1",
     "lucide-react": "0.473.0"
   },
   "devDependencies": {

@@ -1,8 +1,8 @@
-
-import React, { useState, useEffect } from 'react';
-import { SCHOLARSHIPS, SEARCH_PLATFORMS } from '../constants';
-import { Calendar, ArrowUpRight, Search, MapPin, Layers, CheckCircle, ExternalLink } from 'lucide-react';
-import { Link, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect, useMemo } from 'react';
+import { SCHOLARSHIPS, FALLBACK_IMAGE } from '../constants';
+import { Calendar, Search, MapPin, Globe, GraduationCap, Briefcase, FlaskConical, BookOpen, ArrowRight } from 'lucide-react';
+// @ts-ignore
+import { useSearchParams, Link } from 'react-router-dom';
 import { useAppContext } from '../contexts/AppContext';
 import { LocalizedString, OpportunityCategory } from '../types';
 
@@ -14,9 +14,7 @@ const Scholarships: React.FC = () => {
 
   useEffect(() => {
     const cat = searchParams.get('cat');
-    const search = searchParams.get('search');
     if (cat) setFilter(cat as OpportunityCategory);
-    if (search) setSearchTerm(search);
   }, [searchParams]);
 
   const getLang = (content: string | LocalizedString | undefined) => {
@@ -25,61 +23,70 @@ const Scholarships: React.FC = () => {
     return content[language] || content.EN;
   };
 
-  const categories: (OpportunityCategory | 'All')[] = [
-    'All', 'Undergraduate', 'Masters', 'PhD', 'Internship', 'Research', 'Short Course'
+  const categories: {id: OpportunityCategory | 'All', label: {EN: string, AM: string}, icon: any}[] = [
+    { id: 'All', label: { EN: 'All Opportunities', AM: 'ሁሉም እድሎች' }, icon: Globe },
+    { id: 'PhD', label: { EN: 'PhD Programs', AM: 'ፒኤችዲ' }, icon: FlaskConical },
+    { id: 'Masters', label: { EN: 'Master’s Degrees', AM: 'ማስተርስ' }, icon: BookOpen },
+    { id: 'Undergraduate', label: { EN: 'Undergraduate', AM: 'ቅድመ ምረቃ' }, icon: GraduationCap },
+    { id: 'Internship', label: { EN: 'Internships', AM: 'ልምምድ' }, icon: Briefcase },
   ];
 
-  const filteredScholarships = SCHOLARSHIPS.filter(s => {
-    const matchesFilter = filter === 'All' || s.category === filter;
-    const matchesSearch = searchTerm === '' || 
-      getLang(s.title).toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.provider.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      s.location.toLowerCase().includes(searchTerm.toLowerCase());
-    return matchesFilter && matchesSearch;
-  });
+  const filteredScholarships = useMemo(() => {
+    return SCHOLARSHIPS.filter(s => {
+      const matchesFilter = filter === 'All' || s.category === filter;
+      const matchesSearch = searchTerm === '' || 
+        getLang(s.title).toLowerCase().includes(searchTerm.toLowerCase()) ||
+        s.provider.toLowerCase().includes(searchTerm.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [filter, searchTerm, language]);
 
   return (
     <div className="bg-brand-sand/30 dark:bg-brand-ink min-h-screen pt-40 pb-20">
-      
-      <div className="container mx-auto px-6 md:px-12 mb-20 text-center">
-        <span className="text-brand-secondary font-bold tracking-[0.4em] uppercase text-[11px] mb-6 block animate-fade-in-up">
-          {t('scholarships.elite')}
-        </span>
-        <h1 className="font-serif text-5xl md:text-8xl text-brand-ink dark:text-brand-sand mb-8 animate-fade-in-up">
-          {t('scholarships.title')}
-        </h1>
-        <p className="text-xl text-brand-ink/70 dark:text-brand-sand/70 font-light max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          Explore 14+ elite international funding opportunities curated specifically for high-potential Ethiopian talent.
-        </p>
+      <div className="container mx-auto px-6 md:px-12 mb-24">
+        <div className="max-w-4xl reveal active">
+          <span className="text-brand-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-8 block">
+            {language === 'AM' ? 'ዓለም አቀፍ የትምህርት ዕድሎች' : 'Global Education Opportunities'}
+          </span>
+          <h1 className="font-serif text-6xl md:text-[7rem] text-brand-ink dark:text-brand-sand mb-10 leading-[0.9]">
+            {language === 'AM' ? 'የጥናት እና የልምምድ ዕድሎች' : 'Scholarships & Internships.'}
+          </h1>
+          <p className="text-xl md:text-2xl text-brand-ink/70 dark:text-brand-sand/70 font-light leading-relaxed max-w-2xl">
+            {language === 'AM' 
+              ? 'ለኢትዮጵያውያን ተማሪዎች የተዘጋጁ ምርጥ ዓለም አቀፍ የገንዘብ ድጋፎች።' 
+              : 'Access elite international funding curated for high-potential Ethiopian scholars. No registration fees, just pure opportunity.'}
+          </p>
+        </div>
       </div>
 
-      {/* Modern Filter Interface */}
+      {/* Filters */}
       <div className="container mx-auto px-6 md:px-12 mb-20">
-        <div className="bg-white dark:bg-zinc-900 border border-brand-ink/5 dark:border-white/5 p-4 shadow-2xl animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div className="relative w-full lg:w-96 group">
+        <div className="bg-white dark:bg-zinc-900 border border-brand-ink/5 dark:border-white/5 p-8 shadow-2xl reveal active rounded-[2.5rem]">
+          <div className="flex flex-col gap-10">
+            <div className="relative w-full group">
               <input 
                 type="text" 
-                placeholder={t('scholarships.find')} 
-                className="w-full bg-brand-sand/50 dark:bg-brand-ink/50 border-none py-4 pl-14 pr-4 text-sm focus:ring-2 focus:ring-brand-accent transition-all dark:text-brand-sand outline-none"
+                placeholder={language === 'AM' ? 'ዕድሎችን ይፈልጉ...' : 'Search programs...'}
+                className="w-full bg-brand-sand/30 dark:bg-brand-ink/50 border-none py-6 pl-16 pr-8 text-lg focus:ring-2 focus:ring-brand-accent transition-all dark:text-brand-sand outline-none rounded-2xl"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-brand-ink/30 dark:text-brand-sand/30 group-focus-within:text-brand-accent transition-colors" size={20} />
+              <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-brand-ink/30 dark:text-brand-sand/30" size={28} />
             </div>
 
-            <div className="flex flex-wrap justify-center gap-2 w-full lg:w-auto overflow-x-auto no-scrollbar py-2">
+            <div className="flex flex-wrap gap-4">
               {categories.map((cat) => (
                 <button
-                  key={cat}
-                  onClick={() => setFilter(cat)}
-                  className={`px-8 py-4 text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                    filter === cat 
-                      ? 'bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink shadow-lg' 
-                      : 'text-brand-ink/40 dark:text-brand-sand/40 hover:bg-brand-ink/5 dark:hover:bg-white/5'
+                  key={cat.id}
+                  onClick={() => setFilter(cat.id)}
+                  className={`flex items-center gap-4 px-8 py-4 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl border ${
+                    filter === cat.id 
+                      ? 'bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink border-brand-ink dark:border-brand-sand shadow-xl' 
+                      : 'bg-transparent border-brand-ink/10 dark:border-white/10 text-brand-ink/40 dark:text-brand-sand/40 hover:border-brand-accent'
                   }`}
                 >
-                  {cat === 'All' ? (language === 'AM' ? 'ሁሉም' : 'All') : cat}
+                  <cat.icon size={16} />
+                  {getLang(cat.label)}
                 </button>
               ))}
             </div>
@@ -90,69 +97,63 @@ const Scholarships: React.FC = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-40">
           {filteredScholarships.map((s, i) => (
-            <article key={s.id} className="group flex flex-col h-full bg-white dark:bg-zinc-900 overflow-hidden border border-brand-ink/5 dark:border-white/5 hover:shadow-2xl transition-all duration-500 reveal active" style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="relative h-64 overflow-hidden">
+            <article key={s.id} className="group flex flex-col h-full bg-white dark:bg-zinc-900 border border-brand-ink/5 dark:border-white/5 hover:shadow-2xl transition-all duration-700 reveal active rounded-[2.5rem] overflow-hidden" style={{ animationDelay: `${i * 0.05}s` }}>
+              <div className="h-64 relative overflow-hidden">
                 <img 
-                  src={s.image} 
+                  src={s.image || FALLBACK_IMAGE} 
                   alt={getLang(s.title)} 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-brand-ink/70 via-transparent to-transparent"></div>
-                <div className="absolute top-6 left-6">
-                  <span className="bg-brand-accent text-brand-ink px-5 py-1.5 text-[10px] font-black uppercase tracking-widest shadow-lg">
+                <div className="absolute top-6 left-6 z-10">
+                  <span className="bg-brand-accent text-brand-ink px-6 py-2 text-[10px] font-black uppercase tracking-widest rounded-full">
                     {getLang(s.level)}
                   </span>
                 </div>
               </div>
 
               <div className="p-10 flex-grow flex flex-col">
-                <div className="flex items-center gap-6 text-[10px] text-brand-ink/50 dark:text-brand-sand/50 mb-8 font-black uppercase tracking-widest">
+                <div className="flex items-center gap-6 text-[9px] text-brand-ink/40 dark:text-brand-sand/40 mb-6 font-black uppercase tracking-widest">
                   <span className="flex items-center gap-2"><MapPin size={12} className="text-brand-secondary" /> {s.location}</span>
-                  {s.deadline && <span className="flex items-center gap-2"><Calendar size={12} className="text-brand-primary dark:text-brand-accent" /> {getLang(s.deadline)}</span>}
+                  <span className="flex items-center gap-2"><Globe size={12} className="text-brand-accent" /> {s.provider}</span>
                 </div>
                 
-                <h3 className="font-serif text-3xl text-brand-ink dark:text-brand-sand mb-4 leading-tight group-hover:text-brand-primary dark:group-hover:text-brand-accent transition-colors">
+                <h3 className="font-serif text-3xl text-brand-ink dark:text-brand-sand mb-6 leading-tight">
                   {getLang(s.title)}
                 </h3>
                 
-                <p className="text-brand-ink/70 dark:text-brand-sand/60 text-sm font-light leading-relaxed mb-8 line-clamp-3">
+                <p className="text-brand-ink/60 dark:text-brand-sand/50 text-sm font-light leading-relaxed mb-8 flex-grow">
                   {getLang(s.description)}
                 </p>
-                
-                <div className="mt-auto space-y-4">
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="flex items-center justify-between w-full bg-brand-sand dark:bg-white/5 p-4 text-[10px] font-black uppercase tracking-widest text-brand-ink dark:text-brand-sand hover:bg-brand-accent hover:text-brand-ink transition-all">
-                    Official Application <ExternalLink size={14} />
-                  </a>
-                  <Link to="/book" className="flex items-center justify-center w-full border border-brand-ink/10 dark:border-white/10 p-4 text-[10px] font-black uppercase tracking-widest text-brand-ink dark:text-brand-sand hover:border-brand-accent transition-all">
-                    Our Consultation Path
-                  </Link>
+
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {s.tags.map(tag => (
+                    <span key={tag} className="text-[8px] font-bold uppercase tracking-widest px-3 py-1 bg-brand-sand dark:bg-white/5 text-brand-ink/50 dark:text-brand-sand/50 rounded-lg">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="pt-8 border-t border-brand-ink/5 dark:border-white/5 flex items-center justify-between">
+                   <div className="flex flex-col">
+                      <span className="text-[9px] font-black uppercase tracking-widest text-brand-ink/30 dark:text-brand-sand/30">Funding Status</span>
+                      <span className="text-xs font-bold text-brand-emerald">{getLang(s.type)}</span>
+                   </div>
+                   <Link to="/book" className="w-12 h-12 bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink flex items-center justify-center rounded-xl group-hover:bg-brand-accent group-hover:text-brand-ink transition-all">
+                      <ArrowRight size={20} />
+                   </Link>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        {/* Search Platforms Section - Fills the empty feel */}
-        <div className="mt-60 bg-brand-ink p-16 md:p-32 relative overflow-hidden reveal active">
-          <div className="absolute inset-0 bg-tibeb-pattern opacity-10 scale-[2]"></div>
-          <div className="relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-20">
-              <span className="text-brand-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-6 block">Resource Hub</span>
-              <h3 className="font-serif text-4xl md:text-7xl text-brand-sand mb-8 leading-tight">Elite Search Platforms</h3>
-              <p className="text-brand-sand/50 font-light text-lg">Direct access to the world's largest databases for postgraduate study and global funding.</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {SEARCH_PLATFORMS.map((p, i) => (
-                <a key={i} href={p.url} target="_blank" rel="noopener noreferrer" className="group bg-white/5 border border-white/10 p-10 hover:bg-brand-accent hover:border-brand-accent transition-all">
-                   <h5 className="font-serif text-2xl text-brand-sand group-hover:text-brand-ink mb-4">{p.name}</h5>
-                   <p className="text-brand-sand/40 group-hover:text-brand-ink/60 text-xs font-bold uppercase tracking-widest mb-8">{p.desc}</p>
-                   <ArrowUpRight size={24} className="text-brand-accent group-hover:text-brand-ink transition-colors" />
-                </a>
-              ))}
-            </div>
+        {filteredScholarships.length === 0 && (
+          <div className="text-center py-40">
+            <h3 className="font-serif text-3xl text-brand-ink/20">No matching scholarships found.</h3>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
