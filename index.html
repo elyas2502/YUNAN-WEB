@@ -8,7 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Noto+Sans+Ethiopic:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Pinyon+Script&family=Noto+Sans+Ethiopic:wght@200;300;400;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -16,7 +16,8 @@
           extend: {
             fontFamily: {
               sans: ['Plus Jakarta Sans', 'Noto Sans Ethiopic', 'sans-serif'],
-              serif: ['Fraunces', 'serif'],
+              serif: ['Playfair Display', 'Fraunces', 'serif'],
+              script: ['Pinyon Script', 'cursive'],
             },
             colors: {
               brand: {
@@ -84,7 +85,8 @@
     "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
     "react-router-dom": "https://esm.sh/react-router-dom@6.28.1?external=react,react-dom",
     "lucide-react": "https://esm.sh/lucide-react@0.473.0?external=react",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.34.0"
   }
 }
 </script>

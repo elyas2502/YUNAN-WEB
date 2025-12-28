@@ -23,6 +23,21 @@ const Scholarships: React.FC = () => {
     return content[language] || content.EN;
   };
 
+  // Helper for optimization
+  const getOptimizedUrl = (url: string, width: number) => {
+    if (!url || !url.includes('images.unsplash.com')) return url;
+    const baseUrl = url.split('?')[0];
+    return `${baseUrl}?auto=format&fit=crop&w=${width}&q=80`;
+  };
+
+  const getSrcSet = (url: string) => {
+    if (!url || !url.includes('images.unsplash.com')) return undefined;
+    return `
+      ${getOptimizedUrl(url, 400)} 400w,
+      ${getOptimizedUrl(url, 800)} 800w
+    `;
+  };
+
   const categories: {id: OpportunityCategory | 'All', label: {EN: string, AM: string}, icon: any}[] = [
     { id: 'All', label: { EN: 'All Opportunities', AM: 'ሁሉም እድሎች' }, icon: Globe },
     { id: 'PhD', label: { EN: 'PhD Programs', AM: 'ፒኤችዲ' }, icon: FlaskConical },
@@ -46,10 +61,10 @@ const Scholarships: React.FC = () => {
       <div className="container mx-auto px-6 md:px-12 mb-24">
         <div className="max-w-4xl reveal active">
           <span className="text-brand-accent font-bold tracking-[0.4em] uppercase text-[11px] mb-8 block">
-            {language === 'AM' ? 'ዓለም አቀፍ የትምህርት ዕድሎች' : 'Global Education Opportunities'}
+            {t('schol.global')}
           </span>
           <h1 className="font-serif text-6xl md:text-[7rem] text-brand-ink dark:text-brand-sand mb-10 leading-[0.9]">
-            {language === 'AM' ? 'የጥናት እና የልምምድ ዕድሎች' : 'Scholarships & Internships.'}
+            {t('schol.title')}
           </h1>
           <p className="text-xl md:text-2xl text-brand-ink/70 dark:text-brand-sand/70 font-light leading-relaxed max-w-2xl">
             {language === 'AM' 
@@ -61,12 +76,12 @@ const Scholarships: React.FC = () => {
 
       {/* Filters */}
       <div className="container mx-auto px-6 md:px-12 mb-20">
-        <div className="bg-white dark:bg-zinc-900 border border-brand-ink/5 dark:border-white/5 p-8 shadow-2xl reveal active rounded-[2.5rem]">
+        <div className="bg-white dark:bg-zinc-900 border border-brand-ink/30 dark:border-white/30 p-8 shadow-2xl reveal active rounded-[2.5rem]">
           <div className="flex flex-col gap-10">
             <div className="relative w-full group">
               <input 
                 type="text" 
-                placeholder={language === 'AM' ? 'ዕድሎችን ይፈልጉ...' : 'Search programs...'}
+                placeholder={t('schol.search')}
                 className="w-full bg-brand-sand/30 dark:bg-brand-ink/50 border-none py-6 pl-16 pr-8 text-lg focus:ring-2 focus:ring-brand-accent transition-all dark:text-brand-sand outline-none rounded-2xl"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -82,7 +97,7 @@ const Scholarships: React.FC = () => {
                   className={`flex items-center gap-4 px-8 py-4 text-[10px] font-black uppercase tracking-widest transition-all rounded-xl border ${
                     filter === cat.id 
                       ? 'bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink border-brand-ink dark:border-brand-sand shadow-xl' 
-                      : 'bg-transparent border-brand-ink/10 dark:border-white/10 text-brand-ink/40 dark:text-brand-sand/40 hover:border-brand-accent'
+                      : 'bg-transparent border-brand-ink/30 dark:border-white/30 text-brand-ink/40 dark:text-brand-sand/40 hover:border-brand-accent'
                   }`}
                 >
                   <cat.icon size={16} />
@@ -97,10 +112,12 @@ const Scholarships: React.FC = () => {
       <div className="container mx-auto px-6 md:px-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12 mb-40">
           {filteredScholarships.map((s, i) => (
-            <article key={s.id} className="group flex flex-col h-full bg-white dark:bg-zinc-900 border border-brand-ink/5 dark:border-white/5 hover:shadow-2xl transition-all duration-700 reveal active rounded-[2.5rem] overflow-hidden" style={{ animationDelay: `${i * 0.05}s` }}>
-              <div className="h-64 relative overflow-hidden">
+            <article key={s.id} className="group flex flex-col h-full bg-white dark:bg-zinc-900 border border-brand-ink/30 dark:border-white/30 hover:shadow-2xl transition-all duration-700 reveal active rounded-[2.5rem] overflow-hidden" style={{ animationDelay: `${i * 0.05}s` }}>
+              <div className="h-64 relative overflow-hidden bg-brand-ink/5">
                 <img 
-                  src={s.image || FALLBACK_IMAGE} 
+                  src={getOptimizedUrl(s.image || FALLBACK_IMAGE, 600)}
+                  srcSet={getSrcSet(s.image || FALLBACK_IMAGE)}
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   alt={getLang(s.title)} 
                   className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
                   loading="lazy"
@@ -135,9 +152,9 @@ const Scholarships: React.FC = () => {
                   ))}
                 </div>
 
-                <div className="pt-8 border-t border-brand-ink/5 dark:border-white/5 flex items-center justify-between">
+                <div className="pt-8 border-t border-brand-ink/30 dark:border-white/30 flex items-center justify-between">
                    <div className="flex flex-col">
-                      <span className="text-[9px] font-black uppercase tracking-widest text-brand-ink/30 dark:text-brand-sand/30">Funding Status</span>
+                      <span className="text-[9px] font-black uppercase tracking-widest text-brand-ink/30 dark:text-brand-sand/30">{t('schol.funding')}</span>
                       <span className="text-xs font-bold text-brand-emerald">{getLang(s.type)}</span>
                    </div>
                    <Link to="/book" className="w-12 h-12 bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink flex items-center justify-center rounded-xl group-hover:bg-brand-accent group-hover:text-brand-ink transition-all">
@@ -151,7 +168,7 @@ const Scholarships: React.FC = () => {
 
         {filteredScholarships.length === 0 && (
           <div className="text-center py-40">
-            <h3 className="font-serif text-3xl text-brand-ink/20">No matching scholarships found.</h3>
+            <h3 className="font-serif text-3xl text-brand-ink/20">{t('schol.no_match')}</h3>
           </div>
         )}
       </div>

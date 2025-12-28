@@ -60,9 +60,39 @@ export interface Program {
   id: string;
   title: LocalizedString;
   field: 'Medicine' | 'Engineering' | 'Business' | 'Computer Science' | 'Arts' | 'Law' | 'Social Sciences' | 'Environmental' | 'Archaeology' | 'Tourism' | 'History' | 'Science' | 'Mathematics';
-  type: 'Undergraduate' | 'Internship' | 'Research';
+  type: 'Undergraduate' | 'Internship' | 'Research' | 'Masters' | 'PhD' | 'Professional';
   countryId: string;
   university: string;
+  logo?: string;
   duration: LocalizedString;
   description: LocalizedString;
+}
+
+// --- NEW TYPES FOR DESTINATION DETAIL ---
+
+export interface DestinationFact {
+  id: string;
+  text: LocalizedString;
+}
+
+export interface DocumentItem {
+  name: LocalizedString;
+  required: boolean;
+}
+
+export interface DegreeRequirement {
+  title: LocalizedString;
+  items: DocumentItem[];
+}
+
+export interface DestinationDetailData {
+  id: string; // Matches Country ID
+  heroImage: string;
+  intro: LocalizedString;
+  facts: DestinationFact[];
+  requirements: {
+    bachelors: DegreeRequirement;
+    masters: DegreeRequirement;
+    phd?: DegreeRequirement;
+  };
 }
