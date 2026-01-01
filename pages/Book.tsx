@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { SERVICES, COMPANY_INFO } from '../constants';
-import { Check, Info, Banknote, Calendar, ShieldCheck, ArrowRight, ArrowLeft, Loader2, AlertCircle } from 'lucide-react';
+import { Check, Info, Banknote, Calendar, ShieldCheck, ArrowRight, ArrowLeft, Loader2, AlertCircle, Send, Star, Copy } from 'lucide-react';
 import { useAppContext } from '../contexts/AppContext';
 import { LocalizedString } from '../types';
 import { BookingService } from '../services/api';
@@ -68,28 +68,99 @@ const Book: React.FC = () => {
 
   if (status === 'success') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-brand-sand/20 dark:bg-brand-ink pt-20">
-        <div className="max-w-2xl text-center px-10 animate-fade-in-up">
-          <div className="w-24 h-24 bg-brand-emerald text-brand-sand flex items-center justify-center mx-auto mb-10 shadow-xl rounded-full">
-            <Check size={48} />
-          </div>
-          <h2 className="font-serif text-5xl md:text-7xl text-brand-ink dark:text-brand-sand mb-6">
-            {t('book.confirmed')}
-          </h2>
-          <div className="bg-brand-ink/5 dark:bg-white/5 inline-block px-6 py-3 rounded-xl mb-8">
-             <span className="text-[10px] font-black uppercase tracking-widest text-brand-ink/50 dark:text-brand-sand/50 block mb-1">Booking Reference</span>
-             <span className="text-xl font-mono font-bold text-brand-primary dark:text-brand-accent">{bookingRef}</span>
-          </div>
-          <p className="text-brand-ink/60 dark:text-brand-sand/60 text-xl mb-12 font-light leading-relaxed">
-            {t('book.success_msg')}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href={COMPANY_INFO.telegramUrl} target="_blank" className="bg-brand-ink dark:bg-brand-sand text-brand-sand dark:text-brand-ink px-12 py-5 font-bold uppercase text-[10px] tracking-[0.4em] shadow-2xl hover:scale-105 transition-all">
-              {t('book.join_tg')}
-            </a>
-            <button onClick={() => window.location.href = '/'} className="px-12 py-5 text-[10px] font-bold uppercase tracking-[0.4em] border border-brand-ink/30 dark:border-white/30 dark:text-brand-sand hover:bg-brand-ink/5">
-              {t('book.back_home')}
-            </button>
+      <div className="min-h-screen flex items-center justify-center bg-brand-sand/20 dark:bg-brand-ink relative overflow-hidden p-6">
+        {/* Decorative Background Elements */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+           <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] bg-brand-accent/5 rounded-full blur-[100px]"></div>
+           <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[100px]"></div>
+        </div>
+
+        <div className="max-w-3xl w-full bg-white dark:bg-zinc-900 rounded-[3rem] shadow-2xl overflow-hidden relative animate-fade-in-up border border-brand-ink/5 dark:border-white/5">
+          {/* Top Decorative Banner */}
+          <div className="h-2 w-full bg-gradient-to-r from-brand-primary via-brand-accent to-brand-primary"></div>
+
+          <div className="p-10 md:p-16 text-center relative z-10">
+            {/* Animated Success Icon */}
+            <div className="w-24 h-24 mx-auto mb-10 relative">
+               <div className="absolute inset-0 bg-brand-emerald/20 rounded-full animate-ping opacity-75"></div>
+               <div className="relative w-full h-full bg-brand-emerald text-white rounded-full flex items-center justify-center shadow-lg ring-4 ring-white dark:ring-zinc-900">
+                  <Check size={40} strokeWidth={3} />
+               </div>
+            </div>
+
+            <h2 className="font-serif text-4xl md:text-6xl text-brand-ink dark:text-brand-sand mb-6 tracking-tight">
+              {t('book.confirmed')}
+            </h2>
+            
+            <p className="text-brand-ink/60 dark:text-brand-sand/60 text-lg mb-12 font-light max-w-lg mx-auto leading-relaxed">
+              {t('book.success_msg')}
+            </p>
+
+            {/* Ticket / Receipt Card */}
+            <div className="bg-brand-sand/30 dark:bg-black/20 border border-brand-ink/10 dark:border-white/10 rounded-3xl p-8 mb-12 max-w-lg mx-auto relative overflow-hidden">
+               {/* Ticket Notches */}
+               <div className="absolute top-1/2 -translate-y-1/2 -left-3 w-6 h-6 bg-white dark:bg-zinc-900 rounded-full border border-brand-ink/5 dark:border-white/5"></div>
+               <div className="absolute top-1/2 -translate-y-1/2 -right-3 w-6 h-6 bg-white dark:bg-zinc-900 rounded-full border border-brand-ink/5 dark:border-white/5"></div>
+               
+               <div className="space-y-6">
+                  {/* Reference Number */}
+                  <div className="flex flex-col items-center border-b border-dashed border-brand-ink/10 dark:border-white/10 pb-6">
+                     <span className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-ink/40 dark:text-brand-sand/40 mb-2">Booking Reference</span>
+                     <div className="flex items-center gap-3 bg-white dark:bg-white/5 px-6 py-3 rounded-xl border border-brand-ink/5 dark:border-white/5">
+                        <span className="font-mono text-2xl font-bold text-brand-primary dark:text-brand-accent tracking-wider">{bookingRef}</span>
+                        <button className="text-brand-ink/20 dark:text-brand-sand/20 hover:text-brand-accent transition-colors" onClick={() => navigator.clipboard.writeText(bookingRef)}>
+                           <Copy size={16} />
+                        </button>
+                     </div>
+                  </div>
+
+                  {/* Details Grid */}
+                  <div className="grid grid-cols-2 gap-y-4 text-left px-4">
+                     <div>
+                        <span className="block text-[9px] font-black uppercase tracking-widest text-brand-ink/40 dark:text-brand-sand/40 mb-1">Service</span>
+                        <span className="text-sm font-bold text-brand-ink dark:text-brand-sand truncate block pr-2">
+                           {SERVICES.find(s => s.id === formData.serviceId)?.title[language] || 'Consultation'}
+                        </span>
+                     </div>
+                     <div className="text-right">
+                        <span className="block text-[9px] font-black uppercase tracking-widest text-brand-ink/40 dark:text-brand-sand/40 mb-1">Date</span>
+                        <span className="text-sm font-bold text-brand-ink dark:text-brand-sand">
+                           {formData.date}
+                        </span>
+                     </div>
+                     <div>
+                        <span className="block text-[9px] font-black uppercase tracking-widest text-brand-ink/40 dark:text-brand-sand/40 mb-1">Method</span>
+                        <span className="text-sm font-bold text-brand-ink dark:text-brand-sand uppercase">
+                           {formData.paymentMethod.replace('_', ' ')}
+                        </span>
+                     </div>
+                     <div className="text-right">
+                        <span className="block text-[9px] font-black uppercase tracking-widest text-brand-ink/40 dark:text-brand-sand/40 mb-1">Status</span>
+                        <span className="text-[10px] font-black uppercase tracking-widest bg-brand-emerald/10 text-brand-emerald px-2 py-1 rounded inline-block">
+                           Pending Payment
+                        </span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <a 
+                href={COMPANY_INFO.telegramUrl} 
+                target="_blank" 
+                className="inline-flex items-center justify-center gap-3 bg-brand-primary text-white px-10 py-4 rounded-2xl font-bold uppercase text-[10px] tracking-[0.2em] shadow-xl hover:shadow-brand-primary/30 hover:-translate-y-1 transition-all group"
+              >
+                 <Send size={16} className="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform" /> 
+                 {t('book.join_tg')}
+              </a>
+              <button 
+                onClick={() => window.location.href = '/'} 
+                className="inline-flex items-center justify-center gap-3 bg-transparent border border-brand-ink/10 dark:border-white/10 text-brand-ink dark:text-brand-sand px-10 py-4 rounded-2xl font-bold uppercase text-[10px] tracking-[0.2em] hover:bg-brand-ink/5 dark:hover:bg-white/5 transition-all"
+              >
+                {t('book.back_home')}
+              </button>
+            </div>
           </div>
         </div>
       </div>

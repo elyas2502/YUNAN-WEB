@@ -170,7 +170,7 @@ const Services: React.FC = () => {
           <h1 className="font-serif text-6xl md:text-8xl text-brand-ink dark:text-brand-sand mb-10 leading-[1.1]">
             {t('serv.hero')} <span className="italic font-light text-brand-primary dark:text-brand-accent">{t('serv.hero_sub')}</span>
           </h1>
-          <p className="text-xl md:text-2xl text-brand-ink dark:text-brand-sand font-normal leading-relaxed max-w-2xl">
+          <p className="text-lg md:text-xl text-brand-ink/80 dark:text-brand-sand/80 font-serif font-light leading-relaxed max-w-3xl">
             {language === 'AM' 
               ? 'በምሕረት በቃሉ የቪዛ ቅጽ እና አማካሪ ድርጅት ውስጥ አስተማማኝ እና ደንበኛ-ተኮር የቪዛ እና የጉዞ አገልግሎቶችን እንሰጣለን። ለትምህርት፣ ለሥራ፣ ለጉብኝት ወይም ቤተሰብን ለመጠየቅ ዓለም አቀፍ ግቦችዎን እንዲያሳኩ በእያንዳንዱ ደረጃ እንመራዎታለን። አቀራረባችን ሙያዊ፣ ጥንቃቄ የተሞላበት እና ለእያንዳንዱ ደንበኛ ፍላጎት የተመቻቸ ነው።'
               : 'At Mhiret Bekalu Visa Form and Consulting, we provide reliable and client-focused visa and travel services. We guide you through every step, helping you achieve your international goals—whether for study, work, tourism, or visiting family. Our approach is professional, careful, and tailored to each client’s needs.'}

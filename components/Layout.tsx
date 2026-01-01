@@ -49,17 +49,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         <div className="container mx-auto px-6 md:px-12 flex justify-between items-center">
           
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <BrandLogo 
                 className={`transition-all duration-500 ${isScrolled ? 'w-10 h-10' : 'w-14 h-14 md:w-16 md:h-16'}`}
                 showText={false} 
                 variant={isScrolled ? 'dark' : 'light'} 
               />
               <div className="flex flex-col text-left">
-                <span className={`font-sans font-black tracking-tight uppercase leading-none transition-all duration-500 ${
-                  isScrolled ? 'text-xl text-brand-ink dark:text-brand-sand' : 'text-2xl md:text-3xl text-brand-sand'
-                }`}>
-                  {language === 'AM' ? 'ምሕረት በቃሉ' : 'Mihret Bekalu'}
+                <span 
+                  className={`font-sans font-black tracking-tight uppercase leading-none transition-all duration-500 ${
+                    isScrolled 
+                      ? 'text-xl text-brand-ink dark:text-brand-sand' 
+                      : 'text-2xl md:text-3xl text-brand-ink dark:text-brand-sand'
+                  }`}
+                >
+                  {language === 'AM' ? 'ምሕረት በቃሉ' : 'Mhiret Bekalu'}
                 </span>
                 <span className={`uppercase font-bold tracking-[0.25em] text-brand-accent mt-0.5 transition-all duration-500 ${
                   isScrolled ? 'text-[8px]' : 'text-[9px] md:text-[10px]'
@@ -154,7 +158,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                   <BrandLogo className="w-14 h-14" variant="light" showText={false} />
                   <div className="text-left">
                     <p className="font-sans text-xl md:text-2xl text-brand-sand font-black leading-none uppercase tracking-tight">
-                      {language === 'AM' ? 'ምሕረት በቃሉ' : 'Mihret Bekalu'}
+                      {language === 'AM' ? 'ምሕረት በቃሉ' : 'Mhiret Bekalu'}
                     </p>
                     <p className="text-brand-accent text-[8px] uppercase font-bold tracking-[0.2em] mt-1">
                       {language === 'AM' ? 'የቪዛ ቅጽ እና አማካሪ' : 'Visa Form & Consultancy'}
@@ -180,74 +184,68 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                </div>
             </div>
 
-            {/* Column 2: Contact Info (Increased Spacing) */}
-            <div>
-              <h4 className="font-serif text-lg text-brand-sand mb-6">{t('nav.contact')}</h4>
-              <ul className="space-y-6"> 
-                <li className="flex gap-3 items-start">
-                  <MapPin size={16} className="text-brand-accent shrink-0 mt-0.5" />
-                  <div className="text-xs font-light text-brand-sand/60">
-                    <p className="text-brand-sand mb-4 font-bold uppercase text-[9px] tracking-widest">{t('footer.headquarters')}</p>
-                    <p>{COMPANY_INFO.address}</p>
-                    <p className="text-[9px] opacity-50 mt-0.5">{COMPANY_INFO.landmark}</p>
-                  </div>
-                </li>
-                <li className="flex gap-3 items-start">
-                  <Phone size={16} className="text-brand-accent shrink-0 mt-0.5" />
-                  <div className="text-xs font-light text-brand-sand/60">
-                    <p className="text-brand-sand mb-2 font-bold uppercase text-[9px] tracking-widest">{t('footer.phone')}</p>
-                    <p>{COMPANY_INFO.phone}</p>
-                    <p>{COMPANY_INFO.phone2}</p>
-                  </div>
-                </li>
-                <li className="flex gap-3 items-start">
-                  <Mail size={16} className="text-brand-accent shrink-0 mt-0.5" />
-                  <div className="text-xs font-light text-brand-sand/60">
-                     <p className="text-brand-sand mb-2 font-bold uppercase text-[9px] tracking-widest">{t('footer.email')}</p>
-                     <p>{COMPANY_INFO.email}</p>
-                  </div>
-                </li>
-              </ul>
+            {/* Column 2: Contact Info */}
+            <div className="col-span-1 lg:col-span-1">
+               <h4 className="font-serif text-lg mb-6">{t('footer.headquarters')}</h4>
+               <ul className="space-y-4">
+                  <li className="flex items-start gap-3 opacity-60">
+                     <MapPin size={16} className="mt-1 text-brand-accent" />
+                     <span className="text-sm font-light leading-relaxed">{COMPANY_INFO.address}<br/>{COMPANY_INFO.landmark}</span>
+                  </li>
+                  <li className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
+                     <Phone size={16} className="text-brand-accent" />
+                     <a href={`tel:${COMPANY_INFO.phone}`} className="text-sm font-light">{COMPANY_INFO.phone}</a>
+                  </li>
+                  <li className="flex items-center gap-3 opacity-60 hover:opacity-100 transition-opacity">
+                     <Mail size={16} className="text-brand-accent" />
+                     <a href={`mailto:${COMPANY_INFO.email}`} className="text-sm font-light">{COMPANY_INFO.email}</a>
+                  </li>
+               </ul>
             </div>
 
             {/* Column 3: Quick Links */}
-            <div>
-              <h4 className="font-serif text-lg text-brand-sand mb-6">{t('footer.discover')}</h4>
-              <ul className="space-y-3 text-xs font-light text-brand-sand/60">
-                <li><Link to="/services" className="hover:text-brand-accent transition-colors">{t('nav.services')}</Link></li>
-                <li><Link to="/success-stories" className="hover:text-brand-accent transition-colors">{t('nav.success')}</Link></li>
-                <li><Link to="/scholarships" className="hover:text-brand-accent transition-colors">{t('nav.scholarships')}</Link></li>
-                <li><Link to="/destinations" className="hover:text-brand-accent transition-colors">{t('nav.destinations')}</Link></li>
-                <li><Link to="/programs" className="hover:text-brand-accent transition-colors">{t('nav.programs')}</Link></li>
-                <li><Link to="/about" className="hover:text-brand-accent transition-colors">{t('nav.about')}</Link></li>
-                <li><Link to="/book" className="hover:text-brand-accent transition-colors">{t('nav.book')}</Link></li>
-              </ul>
+            <div className="col-span-1 lg:col-span-1">
+               <h4 className="font-serif text-lg mb-6">{t('footer.discover')}</h4>
+               <ul className="space-y-3">
+                  {navLinks.map((link) => (
+                    <li key={link.path}>
+                       <Link to={link.path} className="text-sm font-light opacity-60 hover:text-brand-accent hover:opacity-100 transition-all flex items-center gap-2">
+                         <span className="w-1 h-1 rounded-full bg-brand-accent"></span>
+                         {link.name}
+                       </Link>
+                    </li>
+                  ))}
+               </ul>
             </div>
 
-             {/* Column 4: Hours & Legal */}
-            <div>
-              <h4 className="font-serif text-lg text-brand-sand mb-6">{t('footer.hours')}</h4>
-              <div className="p-4 border border-white/20 bg-white/5 rounded-xl mb-4">
-                 <p className="text-[9px] font-bold uppercase tracking-widest text-brand-accent mb-1">{t('footer.mon_fri')}</p>
-                 <p className="text-xs text-brand-sand/80 font-light">8:30 AM - 6:30 PM</p>
-                 <div className="h-px bg-white/20 my-2"></div>
-                 <p className="text-[9px] font-bold uppercase tracking-widest text-brand-accent mb-1">{t('footer.sat')}</p>
-                 <p className="text-xs text-brand-sand/80 font-light">8:30 AM - 1:00 PM</p>
-                 <div className="h-px bg-white/20 my-2"></div>
-                 <p className="text-[9px] font-bold uppercase tracking-widest text-brand-accent mb-1">{t('footer.sun')}</p>
-                 <p className="text-xs text-brand-sand/80 font-light">{t('footer.closed')}</p>
-              </div>
+            {/* Column 4: Newsletter */}
+            <div className="col-span-1 lg:col-span-1">
+               <h4 className="font-serif text-lg mb-6">{t('footer.subscribe')}</h4>
+               <p className="text-xs opacity-50 mb-4 font-light leading-relaxed">
+                 {t('footer.subscribe_desc')}
+               </p>
+               <div className="relative">
+                 <input 
+                   type="email" 
+                   placeholder={t('footer.email_placeholder')} 
+                   className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs outline-none focus:border-brand-accent transition-colors text-brand-sand"
+                 />
+                 <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-brand-accent text-brand-ink p-1.5 rounded-lg hover:bg-white transition-colors">
+                    <Send size={12} />
+                 </button>
+               </div>
             </div>
 
           </div>
 
-          <div className="border-t border-white/10 pt-4 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-[9px] text-brand-sand/40 font-light text-center md:text-left">
-              © {new Date().getFullYear()} {COMPANY_INFO.name}. {t('footer.rights')}
-            </p>
-            <p className="text-[9px] text-brand-sand/30 font-light uppercase tracking-widest">
-              {t('footer.global_access')}
-            </p>
+          {/* Copyright Bar */}
+          <div className="border-t border-white/10 pt-8 mt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+             <p className="text-[10px] uppercase tracking-widest opacity-40">
+               © {new Date().getFullYear()} {COMPANY_INFO.name}. {t('footer.rights')}
+             </p>
+             <p className="text-[10px] opacity-30 font-light max-w-md text-center md:text-right hidden md:block">
+               {t('footer.global_access')}
+             </p>
           </div>
         </div>
       </footer>
